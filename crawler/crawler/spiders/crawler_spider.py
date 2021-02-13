@@ -45,9 +45,10 @@ class CrawlerSpider(scrapy.Spider):
     # REFERENTE A LOJA
     def parse_page(self, response):
 
-        lines = response.xpath('//div[@class="e-col1"]/a')
-        links = lines.xpath('./@href').extract()
-        names = lines.xpath('./@title').extract()
+        store_name_xpath = response.xpath('//div[@class="e-col1"]/img')
+        names = store_name_xpath.xpath('./@title').extract()
+        store_link_xpath = response.xpath('//div[@class="e-col7"]/div[3]/a')
+        links = store_link_xpath.xpath('./@href').extract()        
 
         for link, name in zip(links, names):
             yield scrapy.Request(url=store_link_mount(link), callback=self.parse_item, meta={'card_store': (response.meta['card'], name)})

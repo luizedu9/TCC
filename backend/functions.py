@@ -78,14 +78,10 @@ def register_request(db, deck_name, card_list, user_logged):
 def storage_cards(db, mtg_cards):
 	dictionary = json.loads(mtg_cards)
 	# PEGA CADA NOME DE CARTA EM INGLES E PORTUGUES E ARMAZENA NO BANCO
-	for key in dictionary:
+	for key in dictionary['data']:
 		# REMOVE OS CARACTERES ESPECIAIS E DEIXA LETRAS MINUSCULAS
 		card_english = accent_removal(key).lower()
 		card_portuguese = ''
-		# PROCURA SE A CARTA POSSUI UMA VERSÃO EM PORTUGUES
-		for element in dictionary[key]['foreignData']:
-			if (element['language'] == 'Portuguese (Brazil)'):
-				card_portuguese = accent_removal(element['name'].lower())
 		try:
 			insert_card(db, card_english, card_portuguese)
 		except:
